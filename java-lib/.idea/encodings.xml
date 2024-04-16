@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/coverage/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/coverage/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/exception/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/exception/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lambda-utils/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lambda-utils/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/logging/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/logging/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/model/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-batch/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-batch/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-app/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-app/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-rest-api-security/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-rest-api-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-rest-client-feign-security/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-rest-client-feign-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

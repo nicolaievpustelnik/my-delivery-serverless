@@ -1,0 +1,35 @@
+service: Product
+
+provider:
+  name: aws
+  profile: AdminTest
+  runtime: java17
+  region: us-east-1
+  stage: dev
+  memorySize: 256
+  timeout: 20
+  apiGateway:
+    restApiId: r1yx6g9mif # ID API
+    restApiRootResourceId: hojg2qsjj6 # ID API Resources
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+      Resource: "arn:aws:dynamodb:us-east-1:236767511350:table/restaurant-products"
+
+package:
+  artifact: target/save-product-1.0.0-aws.jar
+
+functions:
+  create:
+    name: delivery-restaurant-product
+    handler: com.toyota.runtime.FunctionInvoker::handleRequest
+    events:
+      - http:
+          path: product
+          method: post
+          cors: true
+    environment:
+      FUNCTION_BEAN_NAME: create
+      MAIN_CLASS: com.lib.delivery.Application
+      JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1

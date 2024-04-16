@@ -1,0 +1,17 @@
+shoji:
+  skip-signature-verification: true
+  public-pkcs8-key-path: src/test/resources/shoji.public.pkcs8.der 
+
+logging:
+  level:
+    .: INFO
+    org.springframework: INFO
+    com.lib: DEBUG
+    com.lib.api.crud: DEBUG
+    com.lib.support: DEBUG
+    com.lib.shoji: DEBUG
+    com.lib.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    ncnp.security.oauth: DEBUG

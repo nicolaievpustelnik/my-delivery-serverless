@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.lib.java</groupId>
+    <artifactId>lib-parent</artifactId>
+    <version>1.9.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>logging</artifactId>
+  <packaging>jar</packaging>
+  <description>Convenient logback.xml</description>
+
+  <properties>
+    <logback-classic.version>1.2.11</logback-classic.version>
+    <logstash-logback-encoder.version>7.1.1</logstash-logback-encoder.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback-classic.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+      <version>${logstash-logback-encoder.version}</version>
+    </dependency>
+  </dependencies>
+
+</project>

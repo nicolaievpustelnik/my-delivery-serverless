@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false">
+  <property name="nameMaxLength" value="35" />
+
+  <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+  <appender name="STDOUT-JSON" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp>
+          <timeZone>UTC</timeZone>
+        </timestamp>
+        <logLevel>
+          <fieldName>level</fieldName>
+        </logLevel>
+        <loggerName>
+          <fieldName>logger</fieldName>
+          <shortenedLoggerNameLength>${nameMaxLength}</shortenedLoggerNameLength>
+        </loggerName>
+        <threadName>
+          <fieldName>thread</fieldName>
+        </threadName>
+        <message/>
+        <mdc />
+        <tags />
+        <stackTrace>
+          <fieldName>stack</fieldName>
+          <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+            <maxDepthPerThrowable>40</maxDepthPerThrowable>
+            <maxLength>2048</maxLength>
+            <shortenedClassNameLength>${nameMaxLength}</shortenedClassNameLength>
+            <rootCauseFirst>true</rootCauseFirst>
+            <exclude>\$\$FastClassByCGLIB\$\$</exclude>
+            <exclude>\$\$FastClassBySpringCGLIB\$\$</exclude>
+            <exclude>\$\$EnhancerBySpringCGLIB\$\$</exclude>
+            <exclude>^sun\.reflect\..*\.invoke</exclude>
+            <exclude>^com\.sun\.</exclude>
+            <exclude>^sun\.net\.</exclude>
+            <exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+            <exclude>^org\.springframework\.cglib\.</exclude>
+            <exclude>^org\.springframework\.transaction\.</exclude>
+            <exclude>^org\.springframework\.validation\.</exclude>
+            <exclude>^org\.springframework\.app\.</exclude>
+            <exclude>^org\.springframework\.aop\.</exclude>
+            <exclude>^org\.springframework\.web\.</exclude>
+            <exclude>^org\.springframework\.boot\.actuate\.</exclude>
+            <exclude>^org\.springframework\.security\.</exclude>
+            <exclude>^org\.apache\.catalina\.</exclude>
+            <exclude>^javax\.</exclude>
+            <exclude>^org\.apache\.tomcat\.</exclude>
+            <exclude>^org\.apache\.coyote\.</exclude>
+            <exclude>^java\.lang\.Thread\.</exclude>
+            <exclude>^java\.util\.concurrent\.</exclude>
+            <exclude>^brave\.servlet\.</exclude>
+            <exclude>^java\.lang\.reflect\.Method\.invoke</exclude>
+          </throwableConverter>
+        </stackTrace>
+      </providers>
+    </encoder>
+  </appender>
+
+  <appender name="STDOUT-TEXT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${LOG_TEXT_PATTERN:-%date{ISO8601} [%thread] %-5level %logger{35} - %msg %n}</pattern>
+		</encoder>
+	</appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="${LOG_ROOT_APPENDER_REF:-STDOUT-JSON}" />
+  </appender>
+
+  <root level="${LOG_ROOT_LEVEL:-WARN}">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+</configuration>

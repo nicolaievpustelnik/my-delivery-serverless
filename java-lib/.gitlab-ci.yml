@@ -1,0 +1,7 @@
+include:
+- project: '$CI_PROJECT_NAMESPACE/gitlab-ci'
+  ref: main
+  file: '/maven-java17-component.yml'
+
+variables:
+  DEP_CHECK_SONAR_SKIP: 'yes'
