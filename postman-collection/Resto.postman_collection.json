@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "fd4e2465-265a-433f-8d7f-02b5c3f35028",
+		"name": "Resto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10848367"
+	},
+	"item": [
+		{
+			"name": "product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Nico's Resto\",\n    \"products\": [\n        {\n            \"id\": \"1\",\n            \"group\": \"Pizza\",\n            \"description\": \"The best pizza\",\n            \"ingredients\": \"Cheese and tomato\",\n            \"creationDate\": \"1997-12-29T12:04:01\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://r1yx6g9mif.execute-api.us-east-1.amazonaws.com/dev/product",
+					"protocol": "https",
+					"host": [
+						"r1yx6g9mif",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "orders",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1\"   ,\n    \"clientName\": \"Nicolaiev Brito\",\n    \"products\": [\n        \"1\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://r1yx6g9mif.execute-api.us-east-1.amazonaws.com/dev/orders",
+					"protocol": "https",
+					"host": [
+						"r1yx6g9mif",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

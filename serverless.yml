@@ -8,6 +8,13 @@ provider:
   stage: dev
   memorySize: 256
   timeout: 20
+  environment:
+    REGION: ${self:provider.region}
+    PENDING_ORDERS_QUEUE:
+      Ref: PendingOrdersQueue
+    PENDING_ORDERS_QUEUE_NAME: PendingOrdersQueue
+    RESTAURANT_PRODUCTS: restaurant-products
+    ORDER_PRODUCTS: restaurant-orders
   apiGateway:
     restApiId: r1yx6g9mif # ID API
     restApiRootResourceId: hojg2qsjj6 # ID API Resources
@@ -16,6 +23,36 @@ provider:
       Action:
         - dynamodb:PutItem
       Resource: "arn:aws:dynamodb:us-east-1:236767511350:table/restaurant-products"
+    - Effect: "Allow"
+      Action:
+        - sqs:SendMessage
+        - sqs:ReceiveMessage
+        - sqs:DeleteMessage
+        - sqs:GetQueueAttributes
+      Resource: "arn:aws:sqs:${self:provider.region}:*:${self:provider.environment.PENDING_ORDERS_QUEUE_NAME}"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.RESTAURANT_PRODUCTS}"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ORDER_PRODUCTS}"
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:DescribeStream"
+        - "dynamodb:GetRecords"
+        - "dynamodb:GetShardIterator"
+        - "dynamodb:ListStreams"
+      Resource: "*"
 
 package:
   artifact: target/save-product-1.0.0-aws.jar
@@ -33,3 +70,83 @@ functions:
       FUNCTION_BEAN_NAME: create
       MAIN_CLASS: com.lib.delivery.Application
       JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+
+  orders:
+    name: delivery-restaurant-orders
+    handler: com.toyota.runtime.FunctionInvoker::handleRequest
+    events:
+      - http:
+          path: orders
+          method: post
+          cors: true
+    environment:
+      FUNCTION_BEAN_NAME: orders
+      MAIN_CLASS: com.lib.delivery.Application
+      JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+
+  prepareOrder:
+    name: delivery-restaurant-prepare
+    handler: com.lib.delivery.function.PrepareOrder
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - PendingOrdersQueue
+              - Arn
+          batchSize: 1
+    environment:
+      FUNCTION_BEAN_NAME: prepareOrder
+      MAIN_CLASS: com.lib.delivery.Application
+      JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+
+  processOrder:
+    name: delivery-restaurant-process
+    handler: com.lib.delivery.function.ProcessOrder
+    events:
+      - stream:
+          type: dynamodb
+          batchSize: 1
+          startingPosition: LATEST
+          arn:
+            Fn::GetAtt:
+              - OrderProducts
+              - StreamArn
+    environment:
+      FUNCTION_BEAN_NAME: processOrder
+      MAIN_CLASS: com.lib.delivery.Application
+      JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+
+resources:
+  Resources:
+    PendingOrdersQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: ${self:provider.environment.PENDING_ORDERS_QUEUE_NAME}
+    RestaurantProducts:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.RESTAURANT_PRODUCTS}
+    OrderProducts:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.ORDER_PRODUCTS}
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE

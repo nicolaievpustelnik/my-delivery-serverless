@@ -2,7 +2,6 @@ package com.lib.delivery.function;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.lib.delivery.dto.request.ProductRequest;
 import com.lib.delivery.dto.request.RestaurantRequest;
 import com.lib.delivery.dto.response.ProductResponse;
 import com.lib.delivery.entity.Product;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
  * This class handles the creation of {@link Product} objects.
  */
 @Slf4j
-
 @Component("create")
 @RequiredArgsConstructor
 public class Create implements Function<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {

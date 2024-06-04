@@ -22,6 +22,12 @@ public interface DynamoDbConvertible<T> {
         }
     }
 
+    default void putIfNonNull(Map<String, AttributeValue> map, String key, List<String> value) {
+        if (value != null) {
+            map.put(key, AttributeValue.builder().ss(value).build());
+        }
+    }
+
     default void putIfNonNull(Map<String, AttributeValue> map, String key, Number value) {
         if (value != null) {
             map.put(key, AttributeValue.builder().n(value.toString()).build());
@@ -37,6 +43,11 @@ public interface DynamoDbConvertible<T> {
     default String getStringOrNull(Map<String, AttributeValue> map, String key) {
         AttributeValue value = map.get(key);
         return value != null ? value.s() : null;
+    }
+
+    default List<AttributeValue> getListOrNull(Map<String, AttributeValue> map, String key) {
+        AttributeValue value = map.get(key);
+        return value != null ? value.l() : null;
     }
 
     default Integer getIntOrNull(Map<String, AttributeValue> map, String key) {
@@ -65,6 +76,11 @@ public interface DynamoDbConvertible<T> {
             return value.ns().stream().map(Integer::parseInt).toList();
         }
         return Collections.emptyList();
+    }
+
+    default Map<String, AttributeValue> getMapOrNull(Map<String, AttributeValue> map, String key) {
+        AttributeValue value = map.get(key);
+        return value != null ? value.m() : null;
     }
 
     default LocalDateTime getDateOrNull(Map<String, AttributeValue> map, String key) {
